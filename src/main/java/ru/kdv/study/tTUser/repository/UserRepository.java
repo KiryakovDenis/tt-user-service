@@ -11,7 +11,6 @@ import ru.kdv.study.tTUser.repository.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.StringJoiner;
 
 @Repository
 @RequiredArgsConstructor
@@ -48,18 +47,21 @@ public class UserRepository {
     private final UserMapper userMapper;
 
     public User insert(User user) {
+        //TODO: Добавить в базу unique constraint к полю username и обработать его здесь.
         try {
             return jdbcTemplate.queryForObject(INSERT, UserToSql(user), userMapper);
         } catch (Exception e) {
-            throw handleException(e);
+            throw DataBaseException.create(e.getMessage());
         }
     }
 
     public User getById(Long id) {
         try {
             return jdbcTemplate.queryForObject(GET_BY_ID, new MapSqlParameterSource("id", id), userMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
-            throw handleException(e, id);
+            throw DataBaseException.create(e.getMessage());
         }
     }
 
@@ -67,7 +69,7 @@ public class UserRepository {
         try {
             return jdbcTemplate.query(GET_ALL_ACTIVE, new MapSqlParameterSource(), userMapper);
         } catch (Exception e) {
-            throw handleException(e);
+            throw DataBaseException.create(e.getMessage());
         }
     }
 
@@ -79,8 +81,10 @@ public class UserRepository {
         params.addValue("deleted_at", LocalDateTime.now());
         try {
             User user = jdbcTemplate.queryForObject(DELETE_USER, params, userMapper);
+        }  catch (EmptyResultDataAccessException e) {
+            throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
-            throw handleException(e, id);
+            throw DataBaseException.create(e.getMessage());
         }
     }
 
@@ -92,17 +96,5 @@ public class UserRepository {
         params.addValue("is_deleted", user.isDeleted());
 
         return params;
-    }
-
-    private DataBaseException handleException(Exception e, Long id) {
-        if (e instanceof EmptyResultDataAccessException) {
-            return DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
-        } else {
-            return DataBaseException.create(e.getMessage());
-        }
-    }
-
-    private DataBaseException handleException(Exception e) {
-            return DataBaseException.create(e.getMessage());
     }
 }
