@@ -2,6 +2,7 @@ package ru.kdv.study.tTUser.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.kdv.study.tTUser.exception.BadRequestException;
 import ru.kdv.study.tTUser.model.User;
@@ -18,6 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     public UserResponse create(final UserInsert userInsert) {
         validate(userInsert);
         return UserToResponseUser(
@@ -25,18 +27,21 @@ public class UserService {
         );
     }
 
+    @Transactional(readOnly = true)
     public UserResponse getById(Long id) {
         return UserToResponseUser(
                 userRepository.getById(id)
         );
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllActive() {
         return userRepository.getAllActive().stream()
                 .map(this::UserToResponseUser)
                 .toList();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public UserDeleteResponse delete(Long id) {
         userRepository.delete(id);
         return new UserDeleteResponse(true);

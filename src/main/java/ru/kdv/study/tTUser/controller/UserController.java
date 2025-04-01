@@ -16,7 +16,7 @@ import ru.kdv.study.tTUser.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 
