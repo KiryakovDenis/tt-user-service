@@ -15,4 +15,6 @@ public class User {
     private Integer passwordHash;
     private boolean deleted;
     private LocalDateTime deletedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

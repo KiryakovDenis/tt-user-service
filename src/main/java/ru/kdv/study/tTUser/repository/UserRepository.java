@@ -1,6 +1,7 @@
 package ru.kdv.study.tTUser.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -47,9 +48,10 @@ public class UserRepository {
     private final UserMapper userMapper;
 
     public User insert(User user) {
-        //TODO: Добавить в базу unique constraint к полю username и обработать его здесь.
         try {
             return jdbcTemplate.queryForObject(INSERT, UserToSql(user), userMapper);
+        } catch (DuplicateKeyException e) {
+            throw DataBaseException.create(String.format("Пользователь с именем '%s' уже существует", user.getUsername()));
         } catch (Exception e) {
             throw DataBaseException.create(e.getMessage());
         }

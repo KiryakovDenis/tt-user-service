@@ -18,6 +18,8 @@ public class UserMapper implements RowMapper<User> {
                 .passwordHash(rs.getInt("password_hash"))
                 .deleted(rs.getBoolean("is_deleted"))
                 .deletedAt(rs.getObject("deleted_at", LocalDateTime.class))
+                .createdAt(rs.getObject("created_at", LocalDateTime.class))
+                .updatedAt(rs.getObject("updated_at", LocalDateTime.class))
                 .build();
     }
 }
