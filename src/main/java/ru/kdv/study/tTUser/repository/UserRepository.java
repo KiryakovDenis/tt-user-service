@@ -1,6 +1,7 @@
 package ru.kdv.study.tTUser.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -58,7 +59,7 @@ public class UserRepository {
         try {
             return jdbcTemplate.queryForObject(GET_BY_ID, new MapSqlParameterSource("id", id), userMapper);
         } catch (Exception e) {
-            throw handleException(e);
+            throw handleException(e, id);
         }
     }
 
@@ -79,7 +80,7 @@ public class UserRepository {
         try {
             User user = jdbcTemplate.queryForObject(DELETE_USER, params, userMapper);
         } catch (Exception e) {
-            throw handleException(e);
+            throw handleException(e, id);
         }
     }
 
@@ -93,11 +94,15 @@ public class UserRepository {
         return params;
     }
 
+    private DataBaseException handleException(Exception e, Long id) {
+        if (e instanceof EmptyResultDataAccessException) {
+            return DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
+        } else {
+            return DataBaseException.create(e.getMessage());
+        }
+    }
+
     private DataBaseException handleException(Exception e) {
-        return DataBaseException.create(new StringJoiner("\n")
-                .add(e.getMessage())
-                .add(e.getCause().getMessage())
-                .toString()
-        );
+            return DataBaseException.create(e.getMessage());
     }
 }

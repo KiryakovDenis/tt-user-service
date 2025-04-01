@@ -16,21 +16,20 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ExceptionMessage> handleException(Exception e) {
         log.error("ExceptionController#Exception", e);
-        return ResponseEntity.internalServerError().body(new ExceptionMessage(e.getMessage()));
+        return ResponseEntity.internalServerError().body(new ExceptionMessage(false, e.getMessage()));
     }
 
     @ExceptionHandler(DataBaseException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ExceptionMessage> handleDataBaseException(DataBaseException e) {
         log.error("ExceptionController#DataBaseException", e);
-        return ResponseEntity.internalServerError().body(new ExceptionMessage(e.getMessage()));
+        return ResponseEntity.internalServerError().body(new ExceptionMessage(false, e.getMessage()));
     }
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionMessage> handleBadRequestException(BadRequestException e) {
         log.error("ExceptionController#BadRequestException", e);
-        return ResponseEntity.badRequest().body(new ExceptionMessage(e.getMessage()));
+        return ResponseEntity.badRequest().body(new ExceptionMessage(false, e.getMessage()));
     }
-
 }
