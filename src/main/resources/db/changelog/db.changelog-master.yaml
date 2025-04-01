@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/202504012055__create_trigger_on_user.sql
   - include:
       file: db/changelog/202504012143__add_unique_constraint.sql
+  - include:
+      file: db/changelog/202504012218__alter_table_change_password_hash_type.sql

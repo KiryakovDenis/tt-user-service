@@ -11,6 +11,9 @@ import ru.kdv.study.tTUser.model.dto.UserInsert;
 import ru.kdv.study.tTUser.model.dto.UserResponse;
 import ru.kdv.study.tTUser.repository.UserRepository;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -50,12 +53,22 @@ public class UserService {
     private User UserInsertToUser (UserInsert userInsert) {
         return User.builder()
                 .username(userInsert.getUsername())
-                .passwordHash(userInsert.getPassword().hashCode())
+                .passwordHash(makeHashPassword(userInsert.getPassword()))
                 .build();
     }
 
     private UserResponse UserToResponseUser(User user) {
         return new UserResponse(user.getId(), user.getUsername());
+    }
+
+    private String makeHashPassword(String password) {
+        try {
+            return DatatypeConverter.printHexBinary(
+                        MessageDigest.getInstance("MD5").digest(password.getBytes())
+                    ).toLowerCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw BadRequestException.create("Ошибка алгоритма шифрования пароля");
+        }
     }
 
     private void validate(UserInsert userInsert) {

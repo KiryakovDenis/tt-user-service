@@ -15,7 +15,7 @@ public class UserMapper implements RowMapper<User> {
         return User.builder()
                 .id(rs.getLong("id"))
                 .username(rs.getString("username"))
-                .passwordHash(rs.getInt("password_hash"))
+                .passwordHash(rs.getString("password_hash"))
                 .deleted(rs.getBoolean("is_deleted"))
                 .deletedAt(rs.getObject("deleted_at", LocalDateTime.class))
                 .createdAt(rs.getObject("created_at", LocalDateTime.class))
