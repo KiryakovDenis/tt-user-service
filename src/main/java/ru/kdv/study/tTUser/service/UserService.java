@@ -25,14 +25,14 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public UserResponse create(final UserInsert userInsert) {
         validate(userInsert);
-        return UserToResponseUser(
-                userRepository.insert(UserInsertToUser(userInsert))
+        return userToResponseUser(
+                userRepository.insert(userInsertToUser(userInsert))
         );
     }
 
     @Transactional(readOnly = true)
     public UserResponse getById(Long id) {
-        return UserToResponseUser(
+        return userToResponseUser(
                 userRepository.getById(id)
         );
     }
@@ -40,7 +40,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<UserResponse> getAllActive() {
         return userRepository.getAllActive().stream()
-                .map(this::UserToResponseUser)
+                .map(this::userToResponseUser)
                 .toList();
     }
 
@@ -50,14 +50,14 @@ public class UserService {
         return new UserDeleteResponse(true);
     }
 
-    private User UserInsertToUser (UserInsert userInsert) {
+    private User userInsertToUser(UserInsert userInsert) {
         return User.builder()
                 .username(userInsert.getUsername())
                 .passwordHash(makeHashPassword(userInsert.getPassword()))
                 .build();
     }
 
-    private UserResponse UserToResponseUser(User user) {
+    private UserResponse userToResponseUser(User user) {
         return new UserResponse(user.getId(), user.getUsername());
     }
 
