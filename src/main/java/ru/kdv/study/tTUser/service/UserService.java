@@ -38,8 +38,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> getAllActive() {
-        return userRepository.getAllActive().stream()
+    public List<UserResponse> getActiveByIds(List<Long> ids) {
+        return userRepository.getActiveByIds(ids).stream()
                 .map(this::userToResponseUser)
                 .toList();
     }

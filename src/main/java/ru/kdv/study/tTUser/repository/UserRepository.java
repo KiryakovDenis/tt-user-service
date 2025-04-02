@@ -30,18 +30,19 @@ public class UserRepository {
                AND is_deleted = false
             """;
 
-    private static final String GET_ALL_ACTIVE = """
-            SELECT *
-              FROM tt_users."user"
-             WHERE is_deleted = false
-            """;
-
     private static final String DELETE_USER = """
             UPDATE tt_users."user"
                SET is_deleted = true
              WHERE id = :id
                AND is_deleted = false
             RETURNING *
+            """;
+
+    private static final String GET_ACTIVE_BY_IDS = """
+            SELECT *
+              FROM tt_users."user"
+             WHERE is_deleted = false
+               and id in (:ids)
             """;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -67,22 +68,13 @@ public class UserRepository {
         }
     }
 
-    public List<User> getAllActive() {
-        try {
-            return jdbcTemplate.query(GET_ALL_ACTIVE, new MapSqlParameterSource(), userMapper);
-        } catch (Exception e) {
-            throw DataBaseException.create(e.getMessage());
-        }
+    public List<User> getActiveByIds(List<Long> ids) {
+        return jdbcTemplate.query(GET_ACTIVE_BY_IDS, new MapSqlParameterSource("ids", ids), userMapper);
     }
 
     public void delete(Long id) {
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", id);
-
-        //TODO: Возможно определение deleted_at нужно перенести в базу.
-        params.addValue("deleted_at", LocalDateTime.now());
         try {
-            User user = jdbcTemplate.queryForObject(DELETE_USER, params, userMapper);
+            User user = jdbcTemplate.queryForObject(DELETE_USER, new MapSqlParameterSource("id", id), userMapper);
         }  catch (EmptyResultDataAccessException e) {
             throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
@@ -96,7 +88,6 @@ public class UserRepository {
         params.addValue("username", user.getUsername());
         params.addValue("password_hash", user.getPasswordHash());
         params.addValue("is_deleted", user.isDeleted());
-
         return params;
     }
 }

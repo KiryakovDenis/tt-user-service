@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kdv.study.tTUser.model.dto.UserDeleteResponse;
 import ru.kdv.study.tTUser.model.dto.UserInsert;
@@ -39,8 +40,8 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Получить список пользователей")
-    public List<UserResponse> getAllActive() {
-        return userService.getAllActive();
+    public List<UserResponse> getAllActive(@RequestParam final List<Long> ids) {
+        return userService.getActiveByIds(ids);
     }
 
     @DeleteMapping("/{id}")
