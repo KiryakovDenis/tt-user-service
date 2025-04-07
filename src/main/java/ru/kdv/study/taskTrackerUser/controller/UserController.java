@@ -1,4 +1,4 @@
-package ru.kdv.study.tTUser.controller;
+package ru.kdv.study.taskTrackerUser.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kdv.study.tTUser.model.dto.UserDeleteResponse;
-import ru.kdv.study.tTUser.model.dto.UserInsert;
-import ru.kdv.study.tTUser.model.dto.UserResponse;
-import ru.kdv.study.tTUser.service.UserService;
+import ru.kdv.study.taskTrackerUser.model.dto.UserDeleteResponse;
+import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
+import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
+import ru.kdv.study.taskTrackerUser.service.UserService;
 
 import java.util.List;
 

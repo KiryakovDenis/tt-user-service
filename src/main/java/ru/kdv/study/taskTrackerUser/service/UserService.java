@@ -1,19 +1,17 @@
-package ru.kdv.study.tTUser.service;
+package ru.kdv.study.taskTrackerUser.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import ru.kdv.study.tTUser.exception.BadRequestException;
-import ru.kdv.study.tTUser.model.User;
-import ru.kdv.study.tTUser.model.dto.UserDeleteResponse;
-import ru.kdv.study.tTUser.model.dto.UserInsert;
-import ru.kdv.study.tTUser.model.dto.UserResponse;
-import ru.kdv.study.tTUser.repository.UserRepository;
+import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
+import ru.kdv.study.taskTrackerUser.model.User;
+import ru.kdv.study.taskTrackerUser.model.dto.UserDeleteResponse;
+import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
+import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
+import ru.kdv.study.taskTrackerUser.repository.UserRepository;
+import ru.kdv.study.taskTrackerUser.security.SecurityUtl;
 
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -53,22 +51,12 @@ public class UserService {
     private User userInsertToUser(UserInsert userInsert) {
         return User.builder()
                 .username(userInsert.getUsername())
-                .passwordHash(makeHashPassword(userInsert.getPassword()))
+                .passwordHash(SecurityUtl.makeHashPassword(userInsert.getPassword()))
                 .build();
     }
 
     private UserResponse userToResponseUser(User user) {
         return new UserResponse(user.getId(), user.getUsername());
-    }
-
-    private String makeHashPassword(String password) {
-        try {
-            return DatatypeConverter.printHexBinary(
-                        MessageDigest.getInstance("MD5").digest(password.getBytes())
-                    ).toLowerCase();
-        } catch (NoSuchAlgorithmException e) {
-            throw BadRequestException.create("Ошибка алгоритма шифрования пароля");
-        }
     }
 
     private void validate(UserInsert userInsert) {

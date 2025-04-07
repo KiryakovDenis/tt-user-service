@@ -1,4 +1,4 @@
-package ru.kdv.study.tTUser.exception;
+package ru.kdv.study.taskTrackerUser.exception;
 
 public class DataBaseException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package ru.kdv.study.tTUser.repository;
+package ru.kdv.study.taskTrackerUser.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -6,11 +6,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.kdv.study.tTUser.exception.DataBaseException;
-import ru.kdv.study.tTUser.model.User;
-import ru.kdv.study.tTUser.repository.mapper.UserMapper;
+import ru.kdv.study.taskTrackerUser.exception.DataBaseException;
+import ru.kdv.study.taskTrackerUser.model.User;
+import ru.kdv.study.taskTrackerUser.repository.mapper.UserMapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository

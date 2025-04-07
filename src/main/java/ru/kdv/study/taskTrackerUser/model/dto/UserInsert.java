@@ -1,4 +1,4 @@
-package ru.kdv.study.tTUser.model.dto;
+package ru.kdv.study.taskTrackerUser.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

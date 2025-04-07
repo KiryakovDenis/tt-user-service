@@ -1,8 +1,8 @@
-package ru.kdv.study.tTUser.repository.mapper;
+package ru.kdv.study.taskTrackerUser.repository.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ru.kdv.study.tTUser.model.User;
+import ru.kdv.study.taskTrackerUser.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
