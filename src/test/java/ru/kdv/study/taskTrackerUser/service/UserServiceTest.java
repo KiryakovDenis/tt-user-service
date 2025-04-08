@@ -27,7 +27,6 @@ public class UserServiceTest {
     @InjectMocks
     UserService userService;
 
-
     private UserInsert validUserInsert = new UserInsert("user1", "password1");
     private User validUserIn = User.builder()
             .id(null)

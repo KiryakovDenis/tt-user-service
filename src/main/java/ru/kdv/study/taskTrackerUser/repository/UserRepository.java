@@ -34,7 +34,6 @@ public class UserRepository {
                SET is_deleted = true
              WHERE id = :id
                AND is_deleted = false
-            RETURNING *
             """;
 
     private static final String GET_ACTIVE_BY_IDS = """
@@ -73,7 +72,7 @@ public class UserRepository {
 
     public void delete(Long id) {
         try {
-            jdbcTemplate.queryForObject(DELETE_USER, new MapSqlParameterSource("id", id), userMapper);
+            jdbcTemplate.update(DELETE_USER, new MapSqlParameterSource("id", id));
         }  catch (EmptyResultDataAccessException e) {
             throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
