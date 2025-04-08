@@ -10,7 +10,7 @@ import ru.kdv.study.taskTrackerUser.model.dto.UserDeleteResponse;
 import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
 import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
 import ru.kdv.study.taskTrackerUser.repository.UserRepository;
-import ru.kdv.study.taskTrackerUser.security.SecurityUtl;
+import ru.kdv.study.taskTrackerUser.security.securityUtil;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class UserService {
     private User userInsertToUser(UserInsert userInsert) {
         return User.builder()
                 .username(userInsert.getUsername())
-                .passwordHash(SecurityUtl.makeHashPassword(userInsert.getPassword()))
+                .passwordHash(securityUtil.makeHashPassword(userInsert.getPassword()))
                 .build();
     }
 

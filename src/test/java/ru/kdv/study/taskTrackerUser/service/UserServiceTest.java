@@ -12,7 +12,7 @@ import ru.kdv.study.taskTrackerUser.model.User;
 import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
 import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
 import ru.kdv.study.taskTrackerUser.repository.UserRepository;
-import ru.kdv.study.taskTrackerUser.security.SecurityUtl;
+import ru.kdv.study.taskTrackerUser.security.securityUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -28,23 +28,26 @@ public class UserServiceTest {
     UserService userService;
 
 
-
     private UserInsert validUserInsert = new UserInsert("user1", "password1");
     private User validUserIn = User.builder()
             .id(null)
             .username(validUserInsert.getUsername())
-            .passwordHash(SecurityUtl.makeHashPassword(validUserInsert.getPassword()))
+            .passwordHash(securityUtil.makeHashPassword(validUserInsert.getPassword()))
             .deleted(false)
             .deletedAt(null)
             .build();
     private User validUserOut = User.builder()
             .id(1L)
             .username(validUserInsert.getUsername())
-            .passwordHash(SecurityUtl.makeHashPassword(validUserInsert.getPassword()))
+            .passwordHash(securityUtil.makeHashPassword(validUserInsert.getPassword()))
             .deleted(false)
             .deletedAt(null)
             .build();
     private UserResponse validUserResponse = new UserResponse(validUserOut.getId(), validUserIn.getUsername());
+    private UserInsert NullUsernameUserInsert = new UserInsert(null, "password1");
+    private UserInsert EmptyUsernameUserInsert = new UserInsert(null, "password1");
+    private UserInsert NullPasswordUserInsert = new UserInsert("user1", null);
+    private UserInsert EmptyPasswordUserInsert = new UserInsert("user1", null);
 
     @Test
     @DisplayName("Успешное создание пользователя")
@@ -57,8 +60,6 @@ public class UserServiceTest {
         verify(userRepository).insert(validUserIn);
     }
 
-    private UserInsert NullUsernameUserInsert = new UserInsert(null, "password1");
-
     @Test
     @DisplayName("Валидация имени пользователя со значением null")
     public void validateNullUsername() {
@@ -68,8 +69,6 @@ public class UserServiceTest {
 
     }
 
-    private UserInsert EmptyUsernameUserInsert = new UserInsert(null, "password1");
-
     @Test
     @DisplayName("Валидация имени пользователя с пустым значением")
     public void validateEmptyUsername() {
@@ -78,8 +77,6 @@ public class UserServiceTest {
         assertThat(bre.getMessage()).isEqualTo(errorMessage);
     }
 
-    private UserInsert NullPasswordUserInsert = new UserInsert("user1", null);
-
     @Test
     @DisplayName("Валидация пароля пользователя со значением null")
     public void validateNullPassword() {
@@ -87,8 +84,6 @@ public class UserServiceTest {
         BadRequestException bre = assertThrows(BadRequestException.class, () -> userService.create(NullPasswordUserInsert));
         assertThat(bre.getMessage()).isEqualTo(errorMessage);
     }
-
-    private UserInsert EmptyPasswordUserInsert = new UserInsert("user1", null);
 
     @Test
     @DisplayName("Валидация пароля пользователя с пустым значением")

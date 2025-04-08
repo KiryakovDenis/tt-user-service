@@ -49,7 +49,7 @@ public class UserRepository {
 
     public User insert(User user) {
         try {
-            return jdbcTemplate.queryForObject(INSERT, UserToSql(user), userMapper);
+            return jdbcTemplate.queryForObject(INSERT, userToSql(user), userMapper);
         } catch (DuplicateKeyException e) {
             throw DataBaseException.create(String.format("Пользователь с именем '%s' уже существует", user.getUsername()));
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class UserRepository {
 
     public void delete(Long id) {
         try {
-            User user = jdbcTemplate.queryForObject(DELETE_USER, new MapSqlParameterSource("id", id), userMapper);
+            jdbcTemplate.queryForObject(DELETE_USER, new MapSqlParameterSource("id", id), userMapper);
         }  catch (EmptyResultDataAccessException e) {
             throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class UserRepository {
         }
     }
 
-    private MapSqlParameterSource UserToSql(User user) {
+    private MapSqlParameterSource userToSql(User user) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", user.getId());
         params.addValue("username", user.getUsername());
