@@ -5,7 +5,13 @@ plugins {
 }
 
 group = 'ru.kdv.study'
-version = '1.0-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
@@ -15,7 +21,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
-
 
     implementation 'org.postgresql:postgresql:42.5.4'
     implementation 'org.liquibase:liquibase-core:4.29.2'

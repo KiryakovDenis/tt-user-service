@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/202503312110__init_schema.sql
+  - include:
+      file: db/changelog/202503312111__create_table.sql
+  - include:
+      file: db/changelog/202504012051__alter_table_user.sql
+  - include:
+      file: db/changelog/202504012055__create_trigger_on_user.sql
+  - include:
+      file: db/changelog/202504012143__add_unique_constraint.sql
+  - include:
+      file: db/changelog/202504012218__alter_table_change_password_hash_type.sql

@@ -1,0 +1,1 @@
+ALTER TABLE tt_users.USER ALTER COLUMN password_hash TYPE VARCHAR;
