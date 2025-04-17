@@ -16,3 +16,5 @@ springdoc:
       title: TT-User
       description: Микросервис для работы с пользователями системы Task Tracker
       version: 1.0.0
+task-service:
+  baseUrl: http://localhost:8081/api/v1

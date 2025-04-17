@@ -32,4 +32,14 @@ public class ExceptionController {
         log.error("ExceptionController#BadRequestException", e);
         return ResponseEntity.badRequest().body(new ExceptionMessage(false, e.getMessage()));
     }
+
+    @ExceptionHandler(ExternalServiceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ExceptionMessage> handleBadRequestException(ExternalServiceException e) {
+        log.error("ExceptionController#BnExternalServiceException", e);
+        return ResponseEntity.internalServerError().body(new ExceptionMessage(false, e.getMessage()));
+    }
+
+
 }
+
