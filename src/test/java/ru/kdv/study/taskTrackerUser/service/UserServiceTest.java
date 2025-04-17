@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
+import ru.kdv.study.taskTrackerUser.exception.ExternalServiceException;
 import ru.kdv.study.taskTrackerUser.model.Role;
 import ru.kdv.study.taskTrackerUser.model.User;
 import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
@@ -24,6 +25,9 @@ public class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    TaskService taskService;
 
     @InjectMocks
     UserService userService;
@@ -94,4 +98,16 @@ public class UserServiceTest {
         BadRequestException bre = assertThrows(BadRequestException.class, () -> userService.create(EmptyPasswordUserInsert));
         assertThat(bre.getMessage()).isEqualTo(errorMessage);
     }
+
+    @Test
+    @DisplayName("Валидация невозможности удаления пользователя")
+    public void validateExceptionDelete() {
+        String errorMessage = "Пользователя невозможно удалить, поскольку существуют связанные актуальные задачи";
+
+        Mockito.when(taskService.checkActualTask(1L)).thenReturn(true);
+
+        BadRequestException bre = assertThrows(BadRequestException.class, () -> userService.delete(1L));
+        assertThat(bre.getMessage()).isEqualTo(errorMessage);
+    }
+
 }

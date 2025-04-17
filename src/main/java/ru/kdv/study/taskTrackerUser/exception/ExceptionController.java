@@ -39,7 +39,4 @@ public class ExceptionController {
         log.error("ExceptionController#BnExternalServiceException", e);
         return ResponseEntity.internalServerError().body(new ExceptionMessage(false, e.getMessage()));
     }
-
-
 }
-
