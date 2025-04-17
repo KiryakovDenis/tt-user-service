@@ -52,11 +52,12 @@ public class UserService {
         return User.builder()
                 .username(userInsert.getUsername())
                 .passwordHash(securityUtil.makeHashPassword(userInsert.getPassword()))
+                .role(userInsert.getRole())
                 .build();
     }
 
     private UserResponse userToResponseUser(User user) {
-        return new UserResponse(user.getId(), user.getUsername());
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
     }
 
     private void validate(UserInsert userInsert) {

@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
+import ru.kdv.study.taskTrackerUser.model.Role;
 import ru.kdv.study.taskTrackerUser.model.User;
 import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
 import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
@@ -27,13 +28,14 @@ public class UserServiceTest {
     @InjectMocks
     UserService userService;
 
-    private UserInsert validUserInsert = new UserInsert("user1", "password1");
+    private UserInsert validUserInsert = new UserInsert("user1", "password1", Role.MANAGER);
     private User validUserIn = User.builder()
             .id(null)
             .username(validUserInsert.getUsername())
             .passwordHash(securityUtil.makeHashPassword(validUserInsert.getPassword()))
             .deleted(false)
             .deletedAt(null)
+            .role(validUserInsert.getRole())
             .build();
     private User validUserOut = User.builder()
             .id(1L)
@@ -41,12 +43,13 @@ public class UserServiceTest {
             .passwordHash(securityUtil.makeHashPassword(validUserInsert.getPassword()))
             .deleted(false)
             .deletedAt(null)
+            .role(validUserInsert.getRole())
             .build();
-    private UserResponse validUserResponse = new UserResponse(validUserOut.getId(), validUserIn.getUsername());
-    private UserInsert NullUsernameUserInsert = new UserInsert(null, "password1");
-    private UserInsert EmptyUsernameUserInsert = new UserInsert(null, "password1");
-    private UserInsert NullPasswordUserInsert = new UserInsert("user1", null);
-    private UserInsert EmptyPasswordUserInsert = new UserInsert("user1", null);
+    private UserResponse validUserResponse = new UserResponse(validUserOut.getId(), validUserIn.getUsername(), validUserOut.getRole());
+    private UserInsert NullUsernameUserInsert = new UserInsert(null, "password1", Role.USER);
+    private UserInsert EmptyUsernameUserInsert = new UserInsert(null, "password1", Role.USER);
+    private UserInsert NullPasswordUserInsert = new UserInsert("user1", null, Role.USER);
+    private UserInsert EmptyPasswordUserInsert = new UserInsert("user1", null, Role.USER);
 
     @Test
     @DisplayName("Успешное создание пользователя")
