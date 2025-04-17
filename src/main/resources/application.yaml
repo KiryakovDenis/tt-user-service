@@ -17,4 +17,4 @@ springdoc:
       description: Микросервис для работы с пользователями системы Task Tracker
       version: 1.0.0
 task-service:
-  baseUrl: http://localhost:8081/api/v1
+  baseUrl: ${TASK_SERVICE_URL:http://localhost:8081/api/v1}

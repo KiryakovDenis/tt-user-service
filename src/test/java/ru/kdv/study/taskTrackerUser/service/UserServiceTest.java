@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
-import ru.kdv.study.taskTrackerUser.exception.ExternalServiceException;
 import ru.kdv.study.taskTrackerUser.model.Role;
 import ru.kdv.study.taskTrackerUser.model.User;
 import ru.kdv.study.taskTrackerUser.model.dto.UserInsert;
