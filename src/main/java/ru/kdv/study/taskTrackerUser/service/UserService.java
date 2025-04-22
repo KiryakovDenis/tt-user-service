@@ -45,12 +45,12 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public UserDeleteResponse delete(Long id) {
-        validateDelete(id);
+        validateUserExistTask(id);
         userRepository.delete(id);
         return new UserDeleteResponse(true);
     }
 
-    private void validateDelete(Long id){
+    private void validateUserExistTask(Long id){
         if (taskService.checkActualTask(id)) {
             throw BadRequestException.create("Пользователя невозможно удалить, поскольку существуют связанные актуальные задачи");
         }
