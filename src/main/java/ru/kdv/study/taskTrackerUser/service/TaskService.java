@@ -12,7 +12,7 @@ public class TaskService {
     private final RestTemplate restTemplate;
     private final TaskServiceConfigurationProperties taskServiceConfigurationProperties;
 
-    private static final String CHECK_ACTUAL_TASKS = "/task/checkActualTaskByUser/{id}";
+    private static final String CHECK_ACTUAL_TASKS = "/task/Actual?userId={id}";
 
     public boolean checkActualTask(Long id) {
         try {
