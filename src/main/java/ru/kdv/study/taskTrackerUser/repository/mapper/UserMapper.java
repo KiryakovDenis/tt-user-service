@@ -2,6 +2,7 @@ package ru.kdv.study.taskTrackerUser.repository.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ru.kdv.study.taskTrackerUser.model.Role;
 import ru.kdv.study.taskTrackerUser.model.User;
 
 import java.sql.ResultSet;
@@ -20,6 +21,7 @@ public class UserMapper implements RowMapper<User> {
                 .deletedAt(rs.getObject("deleted_at", LocalDateTime.class))
                 .createdAt(rs.getObject("created_at", LocalDateTime.class))
                 .updatedAt(rs.getObject("updated_at", LocalDateTime.class))
+                .role(Role.valueOf(rs.getString("role")))
                 .build();
     }
 }

@@ -17,4 +17,5 @@ public class User {
     private LocalDateTime deletedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Role role;
 }

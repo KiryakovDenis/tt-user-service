@@ -1,0 +1,1 @@
+ALTER table tt_users.USER ADD COLUMN ROLE varchar default 'USER';

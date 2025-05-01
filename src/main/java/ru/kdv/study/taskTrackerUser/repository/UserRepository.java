@@ -17,8 +17,8 @@ import java.util.List;
 public class UserRepository {
 
     private static final String INSERT = """
-            INSERT INTO tt_users."user" (username, password_hash)
-            VALUES(:username, :password_hash)
+            INSERT INTO tt_users."user" (username, password_hash, role)
+            VALUES(:username, :password_hash, :role)
             RETURNING *
             """;
 
@@ -86,6 +86,7 @@ public class UserRepository {
         params.addValue("username", user.getUsername());
         params.addValue("password_hash", user.getPasswordHash());
         params.addValue("is_deleted", user.isDeleted());
+        params.addValue(":role", user.getRole().name());
         return params;
     }
 }

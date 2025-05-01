@@ -19,6 +19,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TaskService taskService;
 
     @Transactional(rollbackFor = Exception.class)
     public UserResponse create(final UserInsert userInsert) {
@@ -44,19 +45,27 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public UserDeleteResponse delete(Long id) {
+        validateUserExistTask(id);
         userRepository.delete(id);
         return new UserDeleteResponse(true);
+    }
+
+    private void validateUserExistTask(Long id){
+        if (taskService.checkActualTask(id)) {
+            throw BadRequestException.create("Пользователя невозможно удалить, поскольку существуют связанные актуальные задачи");
+        }
     }
 
     private User userInsertToUser(UserInsert userInsert) {
         return User.builder()
                 .username(userInsert.getUsername())
                 .passwordHash(securityUtil.makeHashPassword(userInsert.getPassword()))
+                .role(userInsert.getRole())
                 .build();
     }
 
     private UserResponse userToResponseUser(User user) {
-        return new UserResponse(user.getId(), user.getUsername());
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
     }
 
     private void validate(UserInsert userInsert) {
