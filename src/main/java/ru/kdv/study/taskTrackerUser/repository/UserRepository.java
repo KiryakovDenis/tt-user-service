@@ -47,7 +47,7 @@ public class UserRepository {
     private static final String FIND_USER_BY_TEAM = """
             SELECT u.*
               FROM tt_users.member m
-              join tt_users.user u on u.id = m.user_id 
+              join tt_users.user u on u.id = m.user_id
              WHERE team_id = :team_id
             """;
 
