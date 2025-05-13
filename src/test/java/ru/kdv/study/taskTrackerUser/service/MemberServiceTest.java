@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
 import ru.kdv.study.taskTrackerUser.model.Role;
 import ru.kdv.study.taskTrackerUser.model.User;
-import ru.kdv.study.taskTrackerUser.model.dto.MemberInsert;
+import ru.kdv.study.taskTrackerUser.model.dto.MemberRequest;
 import ru.kdv.study.taskTrackerUser.model.dto.UserResponse;
 import ru.kdv.study.taskTrackerUser.repository.MemberRepository;
 import ru.kdv.study.taskTrackerUser.repository.UserRepository;
@@ -35,13 +35,13 @@ public class MemberServiceTest {
     @InjectMocks
     private MemberService memberService;
 
-    private MemberInsert memberInsert;
+    private MemberRequest memberRequest;
     private User manager;
     private User user;
 
     @BeforeEach
     public void setUp() {
-        memberInsert = new MemberInsert(1L,2L,3L);
+        memberRequest = new MemberRequest(1L,2L,3L);
 
         manager = User.builder()
                 .id(3L)
@@ -61,16 +61,16 @@ public class MemberServiceTest {
         doNothing().when(memberRepository).addUserToTeam(1L, 2L);
         when(userService.getById(3L)).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
 
-        assertDoesNotThrow(() -> memberService.addUserToTeam(memberInsert));
+        assertDoesNotThrow(() -> memberService.addUserToTeam(memberRequest));
 
         verify(memberRepository, times(1)).addUserToTeam(1L, 2L);
     }
 
     @Test
     public void testAddUserToTeamWithNullUserId() {
-        memberInsert.setUserId(null);
+        memberRequest.setUserId(null);
 
-        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberRequest));
     }
 
     @Test
@@ -78,15 +78,15 @@ public class MemberServiceTest {
         manager.setRole(Role.USER);
         when(userService.getById(anyLong())).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
 
-        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberRequest));
     }
 
     @Test
     public void testAddUserToTeamWithNullTeamId() {
-        memberInsert.setTeamId(null);
+        memberRequest.setTeamId(null);
         when(userService.getById(3L)).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
 
-        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.addUserToTeam(memberRequest));
     }
 
     @Test
@@ -94,16 +94,16 @@ public class MemberServiceTest {
         doNothing().when(memberRepository).removeUserFromTeam(anyLong(), anyLong());
         when(userService.getById(anyLong())).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
 
-        assertDoesNotThrow(() -> memberService.removeUserFromTeam(memberInsert));
+        assertDoesNotThrow(() -> memberService.removeUserFromTeam(memberRequest));
 
         verify(memberRepository, times(1)).removeUserFromTeam(1L, 2L);
     }
 
     @Test
     public void testRemoveUserFromTeamWithNullUserId() {
-        memberInsert.setUserId(null);
+        memberRequest.setUserId(null);
 
-        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberRequest));
     }
 
     @Test
@@ -111,14 +111,14 @@ public class MemberServiceTest {
         manager.setRole(Role.USER);
         when(userService.getById(anyLong())).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
 
-        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberRequest));
     }
 
     @Test
     public void testRemoveUserFromTeamWithNullTeamId() {
-        memberInsert.setTeamId(null);
+        memberRequest.setTeamId(null);
         when(userService.getById(anyLong())).thenReturn(new UserResponse(manager.getId(), manager.getUsername(), manager.getRole()));
-        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberInsert));
+        assertThrows(BadRequestException.class, () -> memberService.removeUserFromTeam(memberRequest));
     }
 
     @Test

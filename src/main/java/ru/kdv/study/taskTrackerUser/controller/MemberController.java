@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kdv.study.taskTrackerUser.model.User;
-import ru.kdv.study.taskTrackerUser.model.dto.MemberInsert;
+import ru.kdv.study.taskTrackerUser.model.dto.MemberRequest;
 import ru.kdv.study.taskTrackerUser.service.MemberService;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/member")
 @Tag(name = "Участники команд")
 @RequiredArgsConstructor
-public class memberController {
+public class MemberController {
 
     private final MemberService memberService;
 
@@ -32,13 +32,13 @@ public class memberController {
 
     @PostMapping
     @Operation(summary = "Добавить участника в команду")
-    public void addMember(@RequestBody MemberInsert memberInsert) {
-        memberService.addUserToTeam(memberInsert);
+    public void addMember(@RequestBody MemberRequest memberRequest) {
+        memberService.addUserToTeam(memberRequest);
     }
 
     @PatchMapping
     @Operation(summary = "Удалить участника из команды")
-    public void removeMember(@RequestBody MemberInsert memberInsert) {
-        memberService.removeUserFromTeam(memberInsert);
+    public void removeMember(@RequestBody MemberRequest memberRequest) {
+        memberService.removeUserFromTeam(memberRequest);
     }
 }

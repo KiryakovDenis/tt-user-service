@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MemberInsert {
+public class MemberRequest {
     private Long userId;
     private Long teamId;
     private Long editorId;
