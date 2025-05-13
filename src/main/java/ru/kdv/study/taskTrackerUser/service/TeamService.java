@@ -2,6 +2,7 @@ package ru.kdv.study.taskTrackerUser.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.kdv.study.taskTrackerUser.exception.BadRequestException;
 import ru.kdv.study.taskTrackerUser.model.Role;
@@ -22,12 +23,14 @@ public class TeamService {
         return teamRepository.insert(temp);
     }
 
+    @Transactional(readOnly = true)
     public Team getById(Long id){
         Team result = teamRepository.getById(id);
         result.setMembers(memberService.findMembers(id));
         return result;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     private Team TeamInsertToTeam(TeamInsert team) {
         return Team.builder()
                 .name(team.getName())
