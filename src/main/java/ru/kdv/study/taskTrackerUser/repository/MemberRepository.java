@@ -20,6 +20,7 @@ public class MemberRepository {
             SELECT user_id
               FROM tt_users.member
              WHERE team_id = :team_id
+               AND deleted_at is null
             """;
 
     private static final String ADD_USER_TO_TEAM = """
