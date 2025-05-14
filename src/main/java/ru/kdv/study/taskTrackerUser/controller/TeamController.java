@@ -16,7 +16,7 @@ import ru.kdv.study.taskTrackerUser.service.TeamService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/team")
-@Tag(name = "Команды")
+@Tag(name = "Команда")
 public class TeamController {
 
     private final TeamService teamService;
