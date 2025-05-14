@@ -13,3 +13,13 @@ databaseChangeLog:
       file: db/changelog/202504012218__alter_table_change_password_hash_type.sql
   - include:
       file: db/changelog/202504160845__add_role_column.sql
+  - include:
+      file: db/changelog/202504251546__create_team_table.sql
+  - include:
+      file: db/changelog/202504251656__create_table_member.sql
+  - include:
+      file: db/changelog/202504251719__RECREATE_TRIGGER_PROCEDURE.sql
+  - include:
+      file: db/changelog/202504251724__drop_trigger_procedures.sql
+  - include:
+      file: db/changelog/202505121015__replace_tirgger_function.sql

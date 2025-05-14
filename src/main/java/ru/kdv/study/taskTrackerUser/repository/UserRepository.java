@@ -10,6 +10,7 @@ import ru.kdv.study.taskTrackerUser.exception.DataBaseException;
 import ru.kdv.study.taskTrackerUser.model.User;
 import ru.kdv.study.taskTrackerUser.repository.mapper.UserMapper;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -41,6 +42,13 @@ public class UserRepository {
               FROM tt_users."user"
              WHERE is_deleted = false
                and id in (:ids)
+            """;
+
+    private static final String FIND_USER_BY_TEAM = """
+            SELECT u.*
+              FROM tt_users.member m
+              join tt_users.user u on u.id = m.user_id
+             WHERE team_id = :team_id
             """;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -77,6 +85,14 @@ public class UserRepository {
             throw DataBaseException.create(String.format("Пользователь не найден {id = %s}", id));
         } catch (Exception e) {
             throw DataBaseException.create(e.getMessage());
+        }
+    }
+
+    public List<User> findUsersByTeam(Long teamId) {
+        try {
+            return jdbcTemplate.query(FIND_USER_BY_TEAM, new MapSqlParameterSource("team_id", teamId), userMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
         }
     }
 
